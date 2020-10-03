@@ -1,7 +1,15 @@
 import pymysql as sql
 import time
+import random
+import vars_values as val
+from colorama import init as c_init, Fore, Back, Style
+import os
 
-channel_info = ("Error", "Este es un mensaje de error" "", "")
+c_init(autoreset=True)
+
+
+def choice():
+    return random.choice(val.values_str)
 
 
 class DataBase:
@@ -14,7 +22,22 @@ class DataBase:
             password="6vJrSIB1M8Vvd15jSmM3",
             db=self.db
         )
+
         self.cursor = self.conection.cursor()
+
+    def CreateChannel(self, name, password):
+        c_key = f"{choice()}{choice()}{choice()}{choice()}{choice()}"
+
+        self.cursor.execute(f"INSERT INTO channels(c_name, c_password, c_key) VALUES('{name}', '{password}', '{c_key}');")
+        self.conection.commit()
+
+        self.cursor.execute(f"CREATE TABLE {c_key} {val.create_values}")
+        self.conection.commit()
+
+        print("Chat creado exitosamente")
+
+        self.cursor.execute(f"INSERT INTO {c_key} {val.auto_inserter}")
+        self.conection.commit()
 
     def OpenConection(self):
         self.conection.connect()
@@ -42,10 +65,29 @@ class DataBase:
 
 database = DataBase("bgdw8pqbnrolcqwdgor0")
 
+channel_info = ("", "")
 password_correct = False
 connect = False
+command = True
 while not connect:
-    channel_input = input("\n>A que canal deseas unirte: ")
+    while command:
+        channel_input = input("\n>A que canal deseas unirte             Escribe 'c' para crear un canal\n")
+
+        if channel_input == "c":
+            os.system("cls")
+            c_name_input = input("\nCual será el nombre del canal: ")
+            c_password_input = input("\nCual sera su contraseña: ")
+            command = True
+
+            try:
+                database.CreateChannel(c_name_input, c_password_input)
+
+            except Exception as e:
+                print("Un error ha ocurrido")
+                print(e)
+
+        else:
+            command = False
 
     try:
         channel = database.GetChannel(channel_input)
@@ -55,9 +97,11 @@ while not connect:
     except Exception as e:
         print("Ha ocurrido un error")
         print(e)
+        command = True
 
     if channel_info[1] == "":
         print("Intenta de nuevo")
+        command = True
 
     else:
         while not password_correct:
