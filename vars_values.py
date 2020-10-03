@@ -41,3 +41,18 @@ auto_inserter = "(message_author, message_content, message_color)" \
                 "VALUES('ADMI', '==Chat creado==', 'Yellow');"
 
 database_name = "bgdw8pqbnrolcqwdgor0"
+
+
+def colors(color_name):
+    if color_name == "Red":
+        return "\x1b[1;31m"
+    elif color_name == "Green":
+        return "\x1b[1;32m"
+    elif color_name == "Yellow":
+        return "\x1b[1;33m"
+    elif color_name == "Blue":
+        return "\x1b[1;34m"
+    elif color_name == "Purple":
+        return "\x1b[1;35m"
+    elif color_name == "Withe":
+        return "\x1b[1;37m"
