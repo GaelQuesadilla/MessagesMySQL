@@ -1,3 +1,31 @@
+import pymysql as sql
+
+
+class DataBaseConection:
+    def __init__(self, db):
+        self.db = db
+
+        self.conection = sql.connect(
+            host="bgdw8pqbnrolcqwdgor0-mysql.services.clever-cloud.com",
+            user="u8lkyccigwbsm4ss",
+            password="6vJrSIB1M8Vvd15jSmM3",
+            db=self.db
+        )
+        self.cursor = self.conection.cursor()
+
+    def OpenConection(self):
+        self.conection.connect()
+        self.cursor = self.conection.cursor()
+
+    def CloseConnection(self):
+        self.cursor.close()
+        self.conection.close()
+
+
+class Colors:
+    pass
+
+
 values_str = ("a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
               "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
               "u", "v", "w", "x" "y", "z",
@@ -12,3 +40,4 @@ create_values = "(message_id INT(5) NOT NULL AUTO_INCREMENT," \
 auto_inserter = "(message_author, message_content, message_color)" \
                 "VALUES('ADMI', '==Chat creado==', 'Yellow');"
 
+database_name = "bgdw8pqbnrolcqwdgor0"

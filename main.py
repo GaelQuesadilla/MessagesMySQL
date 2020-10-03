@@ -1,29 +1,14 @@
-import pymysql as sql
 import time
 import random
 import vars_values as val
-from colorama import init as c_init, Fore, Back, Style
 import os
-
-c_init(autoreset=True)
 
 
 def choice():
     return random.choice(val.values_str)
 
 
-class DataBase:
-    def __init__(self, db):
-        self.db = db
-
-        self.conection = sql.connect(
-            host="bgdw8pqbnrolcqwdgor0-mysql.services.clever-cloud.com",
-            user="u8lkyccigwbsm4ss",
-            password="6vJrSIB1M8Vvd15jSmM3",
-            db=self.db
-        )
-
-        self.cursor = self.conection.cursor()
+class DataBase(val.DataBaseConection):
 
     def CreateChannel(self, name, password):
         c_key = f"{choice()}{choice()}{choice()}{choice()}{choice()}"
@@ -38,14 +23,6 @@ class DataBase:
 
         self.cursor.execute(f"INSERT INTO {c_key} {val.auto_inserter}")
         self.conection.commit()
-
-    def OpenConection(self):
-        self.conection.connect()
-        self.cursor = self.conection.cursor()
-
-    def CloseConnection(self):
-        self.cursor.close()
-        self.conection.close()
 
     def GetChannel(self, channel_search):
         self.cursor.execute(f"SELECT * FROM channels WHERE c_name = '{channel_search}';")
@@ -63,24 +40,37 @@ class DataBase:
         return last_message
 
 
-database = DataBase("bgdw8pqbnrolcqwdgor0")
+database = DataBase(val.database_name)
 
 channel_info = ("", "")
 password_correct = False
 connect = False
 command = True
+validate_count = False
+
 while not connect:
     while command:
         channel_input = input("\n>A que canal deseas unirte             Escribe 'c' para crear un canal\n")
-
         if channel_input == "c":
             os.system("cls")
-            c_name_input = input("\nCual será el nombre del canal: ")
-            c_password_input = input("\nCual sera su contraseña: ")
-            command = True
+            while not validate_count:
+                c_name_input = input("\nCual será el nombre del canal: ")
+                c_password_input = input("\nCual sera su contraseña: ")
+                count_name = len(c_name_input)
+                count_password = len(c_password_input)
+                if count_name <= 15 and count_password <= 15:
+                    validate_count = True
+                else:
+                    print("Muy largo, la cantidad mayor de caracteres es 15")
+
+                command = True
 
             try:
-                database.CreateChannel(c_name_input, c_password_input)
+                validate = database.GetChannel(c_name_input)
+                if validate == "()":
+                    database.CreateChannel(c_name_input, c_password_input)
+                else:
+                    print("El canal ya existe")
 
             except Exception as e:
                 print("Un error ha ocurrido")
