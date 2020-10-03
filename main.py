@@ -113,7 +113,7 @@ message_l = int(message_a[0][0])
 
 while True:
 
-    time.sleep(7)
+    time.sleep(3)
 
     database.OpenConection()
     message_l2 = int(database.LastMessage(channel_info[3])[0])
