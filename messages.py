@@ -22,6 +22,7 @@ class Datamessage(val.DataBaseConection):
     def WriteMessage(self, channel_i,  author, content, color):
         self.cursor.execute(f"INSERT INTO {channel_i}(message_author, message_content, message_color)"
                             f"VALUES('{author}', '{content}', '{color}');")
+        self.conection.commit()
 
 
 database = Datamessage(val.database_name)
