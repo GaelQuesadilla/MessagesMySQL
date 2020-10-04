@@ -105,7 +105,7 @@ print("Has accedido :D")
 message_a = database.GetMessages(channel_info[3], 25)
 for m in range(0, len(message_a)):
     message_p = message_a[-m - 1]
-    print(val.colors(message_p[3]) + f"{message_p[0]}|| {message_p[1]} -- {message_p[2]}")
+    val.colors(message_p[3], f"{message_p[0]}|| {message_p[1]} -- {message_p[2]}")
 
 database.CloseConnection()
 
@@ -123,7 +123,7 @@ while True:
 
         for m in range(0, len(message_s)):
             message_p = message_s[-m - 1]
-            print(val.colors(message_p[3]) + f"{message_p[0]}|| {message_p[1]} -- {message_p[2]}")
+            val.colors(message_p[3], f"{message_p[0]}|| {message_p[1]} -- {message_p[2]}")
 
         message_l = message_l2
 

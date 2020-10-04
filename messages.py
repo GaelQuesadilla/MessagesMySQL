@@ -1,5 +1,4 @@
 import vars_values as val
-import time
 import os
 
 
@@ -36,7 +35,6 @@ validate_count = False
 while user:
     while user_init:
         user_input = input("\n>Cual es tu nombre             Escribe 'c' para crear una cuenta\n")
-        user_init = False
 
         if user_input == "c":
             os.system("cls")
@@ -50,13 +48,12 @@ while user:
                 else:
                     print("Muy largo, la cantidad mayor de caracteres es 15")
 
-            print("\x1b[1;31m" + "\nRed", end="")
-            print("\x1b[1;32m" + "   Green", end="")
-            print("\x1b[1;33m" + "   Yellow", end="\n")
-            print("\x1b[1;34m" + "Blue", end="")
-            print("\x1b[1;35m" + "  Purple", end="")
-            print("\x1b[1;37m" + "  Withe", end="")
-            print("\x1b[;37m" + "", end="\n")
+            val.colors("Red", "Red")
+            val.colors("Green", "Green")
+            val.colors("Yellow", "Yellow")
+            val.colors("Blue", "Blue")
+            val.colors("Purple", "Purple")
+            val.colors("Withe", "Withe")
 
             while not color_correct:
                 u_color_input = input("Escoje un color : ")
@@ -65,8 +62,6 @@ while user:
 
                 elif u_color_input == "Blue" or u_color_input == "Purple" or u_color_input == "Withe":
                     color_correct = True
-
-            command = True
 
             try:
                 validate = database.GetUser(u_name_input)
@@ -79,30 +74,28 @@ while user:
                 print(e)
 
         else:
-            command = False
+            user_init = False
 
     try:
         user = database.GetUser(user_input)
         user = user[1: -2]
         user_info = eval(user)
+        user_password_correct = False
 
     except Exception as e:
         print("Ha ocurrido un error")
         print(e)
-        command = True
-        user_info = ("", "")
+        user_password_correct = True
+        user_init = True
+        user = True
 
-    if user_info[1] == "":
-        print("Intenta de nuevo")
-        command = True
-
-    else:
-        while not user_password_correct:
-            print("Escribe la contraseña")
-            password_input = input()
-            if password_input == user_info[2]:
-                user = False
-                user_password_correct = True
+    while not user_password_correct:
+        print("Escribe la contraseña")
+        password_input = input()
+        if password_input == user_info[2]:
+            user = False
+            user_password_correct = True
+            user_init = False
 
 print("Has accedido a tu cuenta :D")
 
@@ -111,7 +104,7 @@ password_correct = False
 connect = False
 while not connect:
 
-    channel_input = input("\n>A que canal deseas unirte")
+    channel_input = input("\n>A que canal deseas unirte ")
 
     try:
         channel = database.GetChannel(channel_input)
@@ -138,16 +131,19 @@ while not connect:
                 database.CloseConnection()
 
 notification = "Has accedido al canal, ya puedes enviar mensajes"
-u_color = val.colors(user_info[3])
+os.system("cls")
 
 while True:
-    print("\x1b[;37m" + f"{notification}")
+    print(notification)
     print("======================================")
-    print(u_color + f"{user_info[1]}:")
+    val.colors(user_info[3], user_info[1])
+
     message_input = input("")
+
     if len(message_input) > 40:
         os.system("cls")
         notification = "Escribiste un mensaje con mas de 40 cifras"
+
     elif len(message_input) == 0:
         os.system("cls")
         notification = "Enviaste un mensaje vacio"

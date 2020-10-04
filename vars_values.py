@@ -1,4 +1,5 @@
 import pymysql as sql
+from colorama import init as init_col, Fore, Back, Style
 
 
 class DataBaseConection:
@@ -22,10 +23,6 @@ class DataBaseConection:
         self.conection.close()
 
 
-class Colors:
-    pass
-
-
 values_str = ("a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
               "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
               "u", "v", "w", "x" "y", "z",
@@ -42,17 +39,28 @@ auto_inserter = "(message_author, message_content, message_color)" \
 
 database_name = "bgdw8pqbnrolcqwdgor0"
 
+init_col(autoreset=True)
 
-def colors(color_name):
+
+def colors(color_name, text):
+
     if color_name == "Red":
-        return "\x1b[1;31m"
+        print(Fore.RED + Style.BRIGHT + text)
+
     elif color_name == "Green":
-        return "\x1b[1;32m"
+        print(Fore.GREEN + Style.BRIGHT + text)
+
     elif color_name == "Yellow":
-        return "\x1b[1;33m"
+        print(Fore.YELLOW + Style.BRIGHT + text)
+
     elif color_name == "Blue":
-        return "\x1b[1;34m"
+        print(Fore.BLUE + Style.BRIGHT + text)
+
     elif color_name == "Purple":
-        return "\x1b[1;35m"
+        print(Fore.MAGENTA + Style.BRIGHT + text)
+
     elif color_name == "Withe":
-        return "\x1b[1;37m"
+        print(Fore.WHITE + Style.BRIGHT + text)
+
+    else:
+        print(Style.BRIGHT + text)
